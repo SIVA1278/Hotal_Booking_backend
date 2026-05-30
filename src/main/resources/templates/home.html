@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Hotel Booking</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/hotels">Browse Hotels</a></li>
+                <li class="nav-item" sec:authorize="hasAuthority('USER')">
+                    <a class="nav-link" href="/user/my-bookings">My Bookings</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link btn btn-outline-light btn-sm px-3 ms-2" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <h1>Welcome to Hotel Booking System</h1>
+        <p class="lead">Find and book your perfect stay in just a few clicks.</p>
+        <div sec:authorize="hasAuthority('ADMIN')" class="mt-3">
+            <a href="/admin/dashboard" class="btn btn-warning">Go to Admin Dashboard</a>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h3>Easy Search</h3>
+                <p>Search hotels by city and check availability in real-time.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h3>Fast Booking</h3>
+                <p>Simple checkout process with simulated payment integration.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h3>Safe & Secure</h3>
+                <p>Protected by Spring Security with role-based access control.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

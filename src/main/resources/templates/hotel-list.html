@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Directory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">Hotel Booking</a>
+        <div class="ms-auto">
+            <a href="/logout" class="btn btn-outline-light btn-sm">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Find Your Perfect Stay</h2>
+        <a href="/admin/add-hotel" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')">Add New Hotel</a>
+    </div>
+
+    <!-- Search Section -->
+    <div class="card p-3 mb-4">
+        <form action="/search" method="get" class="row g-2">
+            <div class="col-md-10">
+                <input type="text" name="city" class="form-control" placeholder="Enter City (e.g. London, Madurai)">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Hotel List Table -->
+    <div class="card shadow-sm">
+        <table class="table table-striped table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Hotel Name</th>
+                    <th>City</th>
+                    <th>Rating</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="hotel : ${hotels}">
+                    <td th:text="${hotel.name}" class="fw-bold"></td>
+                    <td th:text="${hotel.city}"></td>
+                    <td><span class="badge bg-warning text-dark" th:text="${hotel.rating} + ' ★'"></span></td>
+                    <td class="text-end">
+                        <a th:href="@{/rooms/{id}(id=${hotel.id})}" class="btn btn-sm btn-primary">View Rooms</a>
+                        <span sec:authorize="hasAuthority('ADMIN')">
+                            <a th:href="@{/admin/add-room/{id}(id=${hotel.id})}" class="btn btn-sm btn-info text-white">Add Room</a>
+                            <a th:href="@{/admin/delete-hotel/{id}(id=${hotel.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this hotel?')">Delete</a>
+                        </span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(hotels)}">
+                    <td colspan="4" class="text-center py-4 text-muted">No hotels found. Try searching for another city!</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
