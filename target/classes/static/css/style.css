@@ -1,0 +1,49 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+    background-color: var(--primary-color) !important;
+}
+
+.container {
+    margin-top: 15px;
+}
+
+.card {
+    border: 1px solid #dee2e6;
+    box-shadow: none;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.header-section {
+    padding: 20px 0;
+    text-align: center;
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.status-confirmed { color: #28a745; font-weight: bold; }
+.status-pending { color: #ffc107; font-weight: bold; }
+.status-cancelled { color: #dc3545; font-weight: bold; }

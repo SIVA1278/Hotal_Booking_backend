@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Your Stay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">Hotel Booking</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card p-4 shadow-sm">
+                <h3 class="mb-4">Reserve Room</h3>
+                
+                <div th:if="${error}" class="alert alert-danger py-2 small mb-4" th:text="${error}"></div>
+
+                <form th:action="@{/user/save-booking}" method="post" th:object="${booking}">
+                    <!-- passes the Room ID as a simple parameter -->
+                    <input type="hidden" name="roomId" th:value="${booking.room.id}">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Check-In Date</label>
+                        <input type="date" th:field="*{checkInDate}" id="checkInDate" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Check-Out Date</label>
+                        <input type="date" th:field="*{checkOutDate}" id="checkOutDate" class="form-control" required>
+                    </div>
+
+                    <div class="bg-light p-3 rounded mb-4">
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Selected Room:</span>
+                            <span class="fw-bold" th:text="'Room ' + ${booking.room.roomNumber} + ' (' + ${booking.room.roomType} + ')'"></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">Confirm Booking</button>
+                    <div class="text-center mt-3">
+                        <a th:href="@{/rooms/{id}(id=${booking.room.hotel.id})}" class="text-muted small">Go Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getLocalDateString(date) {
+        const offset = date.getTimezoneOffset() * 60000;
+        const localDate = new Date(date.getTime() - offset);
+        return localDate.toISOString().split('T')[0];
+    }
+
+
+    const todayObj = new Date();
+    const today = getLocalDateString(todayObj);
+    
+
+    const maxDateObj = new Date();
+    maxDateObj.setMonth(maxDateObj.getMonth() + 3);
+    const maxDate = getLocalDateString(maxDateObj);
+
+    const checkIn = document.getElementById('checkInDate');
+    const checkOut = document.getElementById('checkOutDate');
+
+
+    checkIn.setAttribute('min', today);
+    checkIn.setAttribute('max', maxDate);
+    
+    checkOut.setAttribute('min', today);
+    checkOut.setAttribute('max', maxDate);
+
+
+    checkIn.addEventListener('change', function() {
+        checkOut.setAttribute('min', this.value);
+    });
+</script>
+
+</body>
+</html>
